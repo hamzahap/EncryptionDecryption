@@ -3,14 +3,10 @@ import pymysql.cursors
 import pandas as pd
 from datetime import date
 from cryptography.fernet import Fernet
+from dotenv import load_dotenv
 import os
 
-DB_NAME = "UrDBName"
-TB_NAME = "UrTableName"
-ANOTHER_TB_NAME = "UrAnotherTableName"
-PASS = "UrPassword"
-USER = "UrUserName"
-HOST = "UrHost"
+load_dotenv()
 
 def main(): 
     #Make Directories if they don't exist
@@ -19,19 +15,19 @@ def main():
     today = date.today()
     datetoday = today.strftime("%b-%d-%Y")
     #Make connection to database
-    connection = pymysql.connect(host= HOST,
-                            user= USER,
-                            password= PASS,
-                            database= DB_NAME,
+    connection = pymysql.connect(host= os.getenv('HOST'),
+                            user= os.getenv('USER'),
+                            password= os.getenv('PASS'),
+                            database= os.getenv('DB_NAME'),
                             cursorclass=pymysql.cursors.DictCursor)
     #Retrieve all the tables in Dictionary format
     with connection:
-        result1 = sql_select(connection, TB_NAME)
-        result2 = sql_select(connection, ANOTHER_TB_NAME)
+        result1 = sql_select(connection, os.getenv('TB_NAME'))
+        result2 = sql_select(connection, os.getenv('ANOTHER_TB_NAME'))
     #Convert to pandas dataframe and save to csv
     #Retrieve file name for further operations
-    table1 = make_backup(result1, datetoday, TB_NAME)
-    table2 = make_backup(result2, datetoday, ANOTHER_TB_NAME)
+    table1 = make_backup(result1, datetoday, os.getenv('TB_NAME'))
+    table2 = make_backup(result2, datetoday, os.getenv('ANOTHER_TB_NAME'))
     #Make key for today's date (When the script is ran)
     write_key(datetoday)
     key = load_key(datetoday)
