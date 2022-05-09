@@ -4,6 +4,7 @@ A simple Encryption/Decryption script for Databases using PyMySQL and Cryptograp
 
 # Backup.py
 
+The library for dotenv is https://pypi.org/project/python-dotenv/ <br/>
 The main function creates the Backups and Keys Directories if they don't exist. <br/>
 The encrypt and decrypt function do exactly what they sound like they do. <br/>
 The library used to make a connection with the database is https://pypi.org/project/PyMySQL/ <br/>
